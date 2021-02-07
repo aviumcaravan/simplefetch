@@ -1,15 +1,23 @@
 #!/bin/sh
 
-if [[ $1 ]]; then
-  echo "this script does not accept arguments."
-  exit 0
+if [ $1 ]
+then
+	echo "this script does not accept arguments."
+	exit 0
 fi
 
 echo "system :            "`uname -s`
 echo "arch :              "`uname -m`
 echo "kernel version :    "`uname -r`
-echo "uptime :            "`uptime -p | cut -d ' ' -f 1 --complement`
+echo "uptime :            "`
+case "BSD" in "$(uname -s)") uptime=$(uptime | cut -d ',' -f 1 | awk '{ print $3, $4}');;
+*) case "Darwin" in "$(uname -s)") uptime=$(uptime | cut -d ',' -f 1 | awk '{ print $3, $4}');;
+*) uptime=$(uptime -p | cut -d ' ' -f 1 --complement);;
+esac
+esac
+echo $uptime`
 echo "shell :             "`echo $SHELL`
-if [[ $XDG_CURRENT_DESKTOP ]]; then
-  echo "desktop session :   "`echo $XDG_CURRENT_DESKTOP`
+if [ $XDG_CURRENT_DESKTOP ]
+then
+	echo "desktop session :   "`echo $XDG_CURRENT_DESKTOP`
 fi
