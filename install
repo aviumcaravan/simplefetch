@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [[ $1 ]]; then
+  cp sysfetch $1/
+  chmod 0755 $1/sysfetch
+else
+  echo "usage: install DESTDIR"
+  echo "eg. './install /usr/bin'"
+  echo "make sure the destination is in your PATH variable"
+fi
